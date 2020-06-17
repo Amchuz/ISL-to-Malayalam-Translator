@@ -1,0 +1,69 @@
+classes: ['നിൽക്കുക', 'walk', 'run', 'jump', 'sit', 'squat', 'kick', 'punch', 'wave']
+image_filename_format: "{:05d}.jpg"
+skeleton_filename_format: "{:05d}.txt"
+
+features:
+  window_size: 5 
+
+p1_get_skeletons.py:
+  openpose:
+    model: cmu 
+    img_size: 656x368
+  input:
+    imgs_desc_txt: data_in/source_imgs/imgs.txt
+    imgs_folder: data_in/source_imgs/
+  output:
+    imgs_info_txt: data_out/raw_skltns/imgs_info.txt
+    detected_skltns_res: &skels_folder data_out/raw_skltns/skltn_res/
+    res_imgs_folder: data_out/raw_skltns/img_res/
+
+p2_skeleton_txts_to_txt.py:
+  input:
+    detected_skltns_folder: *skels_folder
+  output:
+    skltns_txt: &skels_txt data_out/raw_skltns/skeletons_info.txt
+
+p3_preprocess.py:
+  input: 
+    skltns_txt: *skels_txt
+  output:
+    processed_features: &features_x data_out/features_X.csv
+    processed_features_labels: &features_y data_out/features_Y.csv
+
+p4_train.py:
+  input:
+    processed_features: *features_x
+    processed_features_labels: *features_y
+  output:
+    model_path: model/trained_classifier.pickle
+
+p5_test.py:
+  # Input:
+  #   For the input data_type, data_path, and model_path,
+  #   please use the command line arguments.
+  # Output:
+  #   The result video and skeleton txts will be saved to
+  #       ${args.output_folder}/${DST_FOLDER_NAME}/${video_name}
+  #       ${args.output_folder}/${DST_FOLDER_NAME}/${skeleton_folder_name}/${skeleton_filename_format}
+  #   where `DST_FOLDER_NAME` is defined in the function `get_dst_folder_name`.
+  #   In short, the input video or folder will have the same output folder name;
+  #             the input webcam will have a time stamp as the folder name.
+  settings:
+    
+    source:
+      webcam_max_framerate: 10.0
+      video_sample_interval: 1
+
+    openpose:
+      model: mobilenet_thin
+      img_size: 656x368
+      # model: cmu
+      # img_size: 432x368
+
+    display:
+      desired_rows: 480 # Resize the image and then display
+  
+  output:
+    video_name: "video.avi" # save the resultant video to file
+    video_fps: 10.0 # at what frame rate to write the output video
+    skeleton_folder_name: "skeletons/"
