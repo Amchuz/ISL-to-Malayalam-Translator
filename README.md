@@ -1,1 +1,1 @@
-# ISL-to-Malayalam-Translator
+# ISL to Malayalam-Translator
