@@ -38,16 +38,6 @@ p4_train.py:
     model_path: model/trained_classifier.pickle
 
 p5_test.py:
-  # Input:
-  #   For the input data_type, data_path, and model_path,
-  #   please use the command line arguments.
-  # Output:
-  #   The result video and skeleton txts will be saved to
-  #       ${args.output_folder}/${DST_FOLDER_NAME}/${video_name}
-  #       ${args.output_folder}/${DST_FOLDER_NAME}/${skeleton_folder_name}/${skeleton_filename_format}
-  #   where `DST_FOLDER_NAME` is defined in the function `get_dst_folder_name`.
-  #   In short, the input video or folder will have the same output folder name;
-  #             the input webcam will have a time stamp as the folder name.
   settings:
     
     source:
@@ -57,13 +47,11 @@ p5_test.py:
     openpose:
       model: mobilenet_thin
       img_size: 656x368
-      # model: cmu
-      # img_size: 432x368
 
     display:
-      desired_rows: 480 # Resize the image and then display
+      desired_rows: 480
   
   output:
-    video_name: "video.avi" # save the resultant video to file
-    video_fps: 10.0 # at what frame rate to write the output video
+    video_name: "video.avi" 
+    video_fps: 10.0 
     skeleton_folder_name: "skeletons/"
