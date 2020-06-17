@@ -1,4 +1,4 @@
-classes: ['നിൽക്കുക', 'walk', 'run', 'jump', 'sit', 'squat', 'kick', 'punch', 'wave']
+classes: ['പേര്', 'ബന്ദ്','വിജയം','വീട്']
 image_filename_format: "{:05d}.jpg"
 skeleton_filename_format: "{:05d}.txt"
 
